@@ -1,0 +1,42 @@
+<html>
+<head>
+  <script src="js/getTextFile.js"></script>
+  <script src="js/MniObjReader.js"></script>
+</head>
+<body>
+  <h1>Open your JS console</h1>
+  (because there is nothing visual to expect here)
+  <script>
+
+
+
+  // xmlhttp request to load a mniobj file, which is a giant text file
+  getTextFile("models/gray_left_327680.obj", function( mniObjString ) {
+
+    // build a parser
+    var mniObjReader = new MniObjReader();
+
+    // feed the parser with some string content of a mniobj file
+    mniObjReader.parse( mniObjString );
+
+    // a whole lot of data, you may not use all of them
+    var shapeData = mniObjReader.getShapeData();
+    console.log(shapeData);
+
+    // these are the very interesting data you want to use:
+    var indices = mniObjReader.getShapeRawIndices(0); // Uint32Array
+    var positions = mniObjReader.getRawVertices();  // Float32Array
+    var normals = mniObjReader.getRawNormals(); // Float32Array
+    var colors = mniObjReader.getRawColors(); // Uint8Array
+    var surfaceProperties = mniObjReader.getSurfaceProperties(); // object
+
+    // do something with these things...
+
+
+  }, function(status) {
+  	console.log('Something went wrong.');
+  });
+
+  </script>
+</body>
+</html>
